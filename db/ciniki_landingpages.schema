@@ -1,0 +1,49 @@
+#
+# Description
+# -----------
+# This table stores the base information for each landing page. The content for the landing page
+# is stored in the ciniki_web_landingpage_content table.
+#
+# Fields
+# ------
+# id:                   The ID assigned to the page.
+# uuid:                 The Universal Unique ID.
+# business_id:          The business the page is attached to.
+#
+# name:                 The name of the page for internal use.
+# permalink:            The permalink used to identify the page.
+#
+# title:                The title at the top of the screen for the page.
+# short_title:          The title to use in the <head>, if blank title is used.
+#
+# status:               The current status of the landing page
+#
+#                       0 -  In Development
+#                       10 - Active
+#                       40 - Redirect, issue 301 moved to another landing page or other url
+#                       50 - Removed
+#
+# flags:                Any options set for the landing page.
+#
+# redirect_url:         The URL to redirect the user to when status = 40.
+#
+# date_added:           The date and time the record was added to the database.
+# last_updated:         The date and time the record was last changed.
+#
+create table ciniki_landingpages (
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    name varchar(250) not null,
+    permalink varchar(250) not null,
+    title varchar(250) not null,
+    short_title varchar(250) not null,
+    status tinyint unsigned not null,
+    flags tinyint unsigned not null,
+    redirect_url varchar(250) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (uuid),
+    index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';

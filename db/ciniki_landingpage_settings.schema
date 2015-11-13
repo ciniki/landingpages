@@ -1,0 +1,50 @@
+#
+# Description
+# -----------
+# This tables stores the settings for landing pages.
+#
+# Examples:
+# theme:                        The base theme to use for the page.
+# layout:                       The base layout to use for the page.
+# privatetheme-id:              The ID of the private theme to use for the page. If both page-theme and private-theme are
+#                               specified then the private theme is applied on top of the page-theme.
+#
+# header-social-display:        (yes|no) Should the social icons be displayed in the header
+# header-image:                 The ID of the image to display as the logo in the header.
+# header-image-display:         (yes|no) should the header image be displayed.
+# header-menu-display:          (yes|no) Should the main menu be displayed.
+#
+# form:                         The form to display on the landing page.
+# form-above-content:           Display the form above the content
+# form-below-content:           Display the form below the content
+#
+# Fields
+# ------
+# id:                       The ID assigned to the content.
+# uuid:                     The Universal Unique ID.
+# business_id:              The business the domain is part of.
+#
+# page_id:                  The ID of the landing page the settings are for. 
+#                           If the settings are global settings for the module, page_id = 0;
+#
+# detail_key:               The dash notated index key to the setting value.
+#
+# detail_value:             The value of the setting.
+#
+# date_added:               The date and time the record was added to the database.
+# last_updated:             The date and time the record was last changed.
+#
+create table ciniki_landingpage_settings (
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    page_id int not null,
+    detail_key varchar(255) not null,
+    detail_value varchar(20000) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (uuid),
+    unique index (business_id, page_id, detail_key),
+    index sync (business_id, uuid, last_updated)
+) ENGINE=InnoDB, COMMENT='v1.01';

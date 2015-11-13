@@ -1,0 +1,41 @@
+#
+# Description
+# -----------
+# This table stores a block of content for a landing page.
+#
+# Fields
+# ------
+# id:                       The ID assigned to the content.
+# uuid:                     The Universal Unique ID.
+# business_id:              The business the content is attached to.
+#
+# title:                    The title to display above the content.
+#
+# content_type:             The type of content.
+#
+#                           10 - Custom, Text/1 Image
+#                           11 - Manual, no auto processing (no processContent)
+#
+# primary_image_id:         The ID of the primary image for the section of content
+# primary_image_caption:    The Caption for the primary image.
+#
+# content:                  The content to display.
+#
+# date_added:       The date and time the record was added to the database.
+# last_updated:     The date and time the record was last changed.
+#
+create table ciniki_landingpage_content (
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    title varchar(150) not null,
+    content_type tinyint unsigned not null,
+    primary_image_id int not null,
+    primary_image_caption varchar(250) not null,
+    content varchar(20000) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (uuid),
+    index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';
