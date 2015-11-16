@@ -85,16 +85,20 @@ function ciniki_landingpages_main() {
 		this.page.page_id = 0;
 		this.page.data = {};
 		this.page.sections = {
+			'_image':{'label':'Image', 'type':'imageform', 'aside':'yes', 'fields':{
+				'primary_image_id':{'label':'', 'type':'image_id', 'hidelabel':'yes', 'controls':'all', 'history':'no'},
+				}},
 			'info':{'label':'', 'aside':'yes', 'fields':{
 				'name':{'label':'Name', 'type':'text'},
 				'permalink':{'label':'Permalink', 'type':'text'},
 				'title':{'label':'Title', 'type':'text'},
 				'short_title':{'label':'Short Title', 'type':'text'},
+				'subtitle':{'label':'Subtitle', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'0':'In Development', '10':'Active', '50':'Removed'}},
 //				'flags':{'label':'Options', 'type':'flags', 'toggles':{'1':{'name':''},}},
 //				'redirect_url':{'label':'Redirect URL', 'visible':'no'},
 				}},
-			'theme':{'label':'Theme', 'aside':'yes', 'fields':{
+			'theme':{'label':'Theme', 'fields':{
 				'page-theme':{'label':'Theme', 'type':'select', 'options':this.themesAvailable},
 				'page-layout':{'label':'Layout', 'type':'select', 'options':this.layoutsAvailable},
 				'page-privatetheme-id':{'label':'Private Theme', 'type':'select', 'options':{}},
@@ -126,10 +130,18 @@ function ciniki_landingpages_main() {
 				'page_id':this.page_id, 'field':i}};
 		}
 		this.page.cellValue = function(s, i, j, d) {
-			return d.title;
+			return d.menu_title;
 		};
 		this.page.rowFn = function(s, i, d) {
 			return 'M.ciniki_landingpages_main.contentEdit(\'M.ciniki_landingpages_main.pageEdit();\',\'' + d.id + '\');';
+		};
+		this.page.addDropImage = function(iid) {
+			M.ciniki_landingpages_main.page.setFieldValue('primary_image_id', iid, null, null);
+			return true;
+		};
+		this.page.deleteImage = function(fid) {
+			this.setFieldValue(fid, 0, null, null);
+			return true;
 		};
 		this.page.addClose('Back');
 

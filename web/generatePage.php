@@ -32,8 +32,48 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     $form_content = '';
 //    if( isset($page['settings']['page-form']) && $page['settings']['page-form'] != '' ) {
         $form_content .= "<form >";
-        $form_content .= "<input type='email' name='email' placeholder='Enter your email address'>";
+        $form_content .= "<div id='visible-fields'>";
+        $form_content .= "<div class='form-textfield'>";
+        $form_content .= "<label for='email'>Email Address *</label>";
+        $form_content .= "<input type='email' id='email' name='email' placeholder='Enter your email address' onfocus='document.getElementById(\"hidden-fields-above\").className=\"\";'>";
+        $form_content .= "</div>";
+        $form_content .= "</div>";
+        $form_content .= "<div id='hidden-fields-above' class='hidden-fields'>";
+        $form_content .= "<div class='form-radio'>";
+        $form_content .= "<div class='label'>Service Level *</div>";
+        $form_content .= "<div class='form-radio-item'>";
+        $form_content .= "<input type='radio' name='service-level' id='service-level-investor'/><label for='service-level-investor'>Investor</label>";
+        $form_content .= "</div>";
+        $form_content .= "<div class='form-radio-item'>";
+        $form_content .= "<input type='radio' name='service-level' id='service-level-trader'/><label for='service-level-trader'>Trader</label>";
+        $form_content .= "</div>";
+        $form_content .= "</div>";
+        $form_content .= "<div class='form-radio'>";
+        $form_content .= "<div class='label'>Would you like to receive SMS notifications? *</div>";
+        $form_content .= "<div class='form-radio-item'>";
+        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-yes'/><label for='sms-notifications-yes'>Yes</label>";
+        $form_content .= "</div>";
+        $form_content .= "<div class='form-radio-item'>";
+        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-no'/><label for='sms-notifications-no'>No</label>";
+        $form_content .= "</div>";
+        $form_content .= "</div>";
+        $form_content .= "<div class='form-textfield'>";
+        $form_content .= "<label for='cellphone'>Cell Phone Number</label>";
+        $form_content .= "<input type='text' id='cellphone' name='cellphone' placeholder=''>";
+        $form_content .= "</div>";
+        $form_content .= "<p>By choosing to proceed, you agree to the <a href='javascript: popupShow(\"subscription-agreement\");'>Subscription Agreement</a> and to receive emails from Trend Alerts. You may opt out of the service and receipt of emails at any time.</p>";
+        $form_content .= "<div class='form-submit'>";
+        $form_content .= "<input type='submit' value='Start Your Free Trial Now' />";
+        $form_content .= "</div>";
+
+        $form_content .= "</div>";
         $form_content .= "</form>";
+        $form2_content = preg_replace("/above/", 'below', $form_content);
+        $page['javascript'] .= ""
+			. "function updateForm() {"
+                . "console.log('test');"
+            . "}"
+            . "";
  //   }
 
 
@@ -62,6 +102,29 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     }
 
     //
+    // Output the page subtitle
+    //
+    $content .= "<div class='page-subtitle-image-wrap'>";
+    if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
+        $content .= "<div class='page-subtitle'><div class='page-subtitle-wrap'><h2>" . $page['subtitle'] . "</h2></div></div>";
+    }
+
+    //
+    // Image
+    //
+    if( isset($page['primary_image_id']) && $page['primary_image_id'] > 0 ) {
+        ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'getScaledImageURL');
+        $rc = ciniki_web_getScaledImageURL($ciniki, $page['primary_image_id'], 'original', '500', 0);
+        if( $rc['stat'] != 'ok' ) {
+            return $rc;
+        }
+        $content .= "<div class='page-image'><div class='page-image-wrap'>";
+        $content .= "<img title='' alt='" . (isset($page['subtitle'])?$page['subtitle']:'') . "' src='" . $rc['url'] . "' />";
+        $content .= "</div></div>";
+    }
+    $content .= "</div>";
+
+    //
     // Check if form is to be above content
     //
     if( $form_content != '' && isset($page['settings']['page-form-above']) && $page['settings']['page-form-above'] == 'yes') {
@@ -77,7 +140,8 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     $content .= "<div class='entry-content'>";
 
     $item_content = '';
-    $item_menu = "<div class='item-menu-container'><ul class='item-menu'>";
+    $item_menu_items = '';
+    $dropdown_menu_items = '';
     $menu_active = ' item-menu-active';
     $content_active = ' item-content-active';
     $cur_item = '';
@@ -85,7 +149,12 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         if( $cur_item == '' ) {
             $cur_item = $item['permalink'];
         }
-        $item_menu .= "<li id='i-" . $item['permalink'] . "' class='item-menu-item$menu_active'>" 
+        $item_menu_items .= "<li id='i-" . $item['permalink'] . "' class='item-menu-item$menu_active'>" 
+            . "<a class='' onclick='switchContent(\"" . $item['permalink'] . "\");'>"
+            . $item['menu_title'] 
+            . "</a>"
+            . "</li>";
+        $dropdown_menu_items .= "<li id='d-" . $item['permalink'] . "' class='item-menu-item$menu_active'>" 
             . "<a class='' onclick='switchContent(\"" . $item['permalink'] . "\");'>"
             . $item['menu_title'] 
             . "</a>"
@@ -122,18 +191,37 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $menu_active = '';
         $content_active = '';
     }
-    $item_menu .= "</ul></div>";
-
     if( count($page['items']) > 1 ) {
-        $content .= $item_menu;
+        $item_menu_dropdown = '';
+        if( count($page['items']) > 2 ) {
+            $item_menu_dropdown = "<div id='item-menu-dropdown' class='item-menu-dropdown'><ul class='item-menu-dropdown'>";
+            $item_menu_dropdown .= $dropdown_menu_items;
+            $item_menu_dropdown .= "</ul></div>";
+            $item_menu_items .= "<li id='moreinfo' class='item-menu-more'>" 
+                . "<a class='' onclick='showDropdown();'>More Info ...</a>"
+                . "</li>";
+        }
+
+        $content .= "<div class='item-menu-container'><ul class='item-menu-container'>";
+        $content .= $item_menu_items;
+        $content .= "</ul>";
+        $content .= $item_menu_dropdown; 
+        $content .= "</div>";
+
         $page['javascript'] .= ""
             . "var curItem = '" . $cur_item . "';"
 			. "function switchContent(p) {"
                 . "document.getElementById('i-'+curItem).className='item-menu-item';"
+                . "document.getElementById('d-'+curItem).className='item-menu-item';"
                 . "document.getElementById('c-'+curItem).className='item-content';"
                 . "document.getElementById('i-'+p).className='item-menu-item item-menu-active';"
+                . "document.getElementById('d-'+p).className='item-menu-item item-menu-active';"
                 . "document.getElementById('c-'+p).className='item-content item-content-active';"
+                . "document.getElementById('item-menu-dropdown').className='item-menu-dropdown';"
                 . "curItem = p;"
+            . "}"
+            . "function showDropdown() {"
+                . "document.getElementById('item-menu-dropdown').className='item-menu-dropdown item-menu-dropdown-show';"
             . "}"
             . "";
     }
@@ -145,13 +233,13 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     //
     // Check if form is to be below content
     //
-    if( $form_content != '' && isset($page['settings']['page-form-below']) && $page['settings']['page-form-below'] == 'yes') {
+    if( $form2_content != '' && isset($page['settings']['page-form-below']) && $page['settings']['page-form-below'] == 'yes') {
         $content .= "<div class='page-form page-form-below'><div class='page-form-wrap'>";
-        $content .= $form_content;
+        $content .= $form2_content;
         $content .= "</div></div>";
     }
 
-    $content .= "</content>";
+    $content .= "</div>";
 
 	//
 	// Generate the footer

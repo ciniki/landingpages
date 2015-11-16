@@ -26,7 +26,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
 		'item_type'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Type'), 
 		'redirect_url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Redirect URL'), 
 		'item_module'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Module'), 
-		'title'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Title'), 
+		'title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Title'), 
 		'content_type'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Content Type'), 
 		'primary_image_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image'),
 		'primary_image_caption'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image Caption'),

@@ -348,8 +348,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
 		$content .= "<hgroup>\n";
 		if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
 			$content .= "<div class='title-logo'>"
-				. "<a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] 
-				. "' rel='home'><img alt='Home' src='" . $page_home_image['url'] . "' /></a>"
+                . "<img alt='Home' src='" . $page_home_image['url'] . "' />"
 				. "</div>";
 		}
 		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
@@ -358,7 +357,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
 			$content .= "<div class='title-block no-tagline'>";
 		}
 		$content .= "<h1 id='site-title'>";
-		$content .= "<span class='title'><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>" . $ciniki['business']['details']['name'] . "</a></span></h1>\n";
+		$content .= "<span class='title'>" . $ciniki['business']['details']['name'] . "</span></h1>\n";
 		if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
 			$content .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
 		}
@@ -366,11 +365,11 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
 		$content .= "</hgroup>\n";
 	} else {
 		$content .= "<hgroup class='header-image'>\n";
-		$content .= "<span><a href='" . $page_home_url . "' title='" . $ciniki['business']['details']['name'] . "' rel='home'>";
+		$content .= "<span>";
 			if( isset($page_home_image) && $page_home_image['stat'] == 'ok' ) {
 				$content .= "<img alt='Home' src='" . $page_home_image['url'] . "' />";
 			}
-		$content .= "</a></span>\n";
+		$content .= "</span>\n";
 		$content .= "</hgroup>";
 	}
 

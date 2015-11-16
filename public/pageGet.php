@@ -56,8 +56,10 @@ function ciniki_landingpages_pageGet($ciniki) {
 			'permalink'=>'',
 			'title'=>'',
 			'short_title'=>'',
+			'subtitle'=>'',
 			'status'=>'0',
 			'flags'=>'0',
+			'primary_image_id'=>'0',
 			'redirect_url'=>'',
 			'theme'=>'default',
 			'layout'=>'default',
@@ -81,8 +83,10 @@ function ciniki_landingpages_pageGet($ciniki) {
             . "ciniki_landingpages.permalink, "
             . "ciniki_landingpages.title, "
             . "ciniki_landingpages.short_title, "
+            . "ciniki_landingpages.subtitle, "
             . "ciniki_landingpages.status, "
             . "ciniki_landingpages.flags, "
+            . "ciniki_landingpages.primary_image_id, "
             . "ciniki_landingpages.redirect_url "
             . "FROM ciniki_landingpages "
             . "WHERE ciniki_landingpages.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
