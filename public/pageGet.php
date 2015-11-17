@@ -57,6 +57,7 @@ function ciniki_landingpages_pageGet($ciniki) {
 			'title'=>'',
 			'short_title'=>'',
 			'subtitle'=>'',
+			'tagline'=>'',
 			'status'=>'0',
 			'flags'=>'0',
 			'primary_image_id'=>'0',
@@ -84,6 +85,7 @@ function ciniki_landingpages_pageGet($ciniki) {
             . "ciniki_landingpages.title, "
             . "ciniki_landingpages.short_title, "
             . "ciniki_landingpages.subtitle, "
+            . "ciniki_landingpages.tagline, "
             . "ciniki_landingpages.status, "
             . "ciniki_landingpages.flags, "
             . "ciniki_landingpages.primary_image_id, "

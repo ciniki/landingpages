@@ -22,6 +22,7 @@ function ciniki_landingpages_objects($ciniki) {
 			'title'=>array(),
 			'short_title'=>array('default'=>''),
 			'subtitle'=>array('default'=>''),
+			'tagline'=>array('default'=>''),
 			'status'=>array('default'=>'0'),
 			'flags'=>array('default'=>'0'),
 			'primary_image_id'=>array('default'=>'0'),

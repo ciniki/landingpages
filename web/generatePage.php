@@ -34,7 +34,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $form_content .= "<form >";
         $form_content .= "<div id='visible-fields'>";
         $form_content .= "<div class='form-textfield'>";
-        $form_content .= "<label for='email'>Email Address *</label>";
+        $form_content .= "<label for='email'>Sign-up with your Email Address *</label>";
         $form_content .= "<input type='email' id='email' name='email' placeholder='Enter your email address' onfocus='document.getElementById(\"hidden-fields-above\").className=\"\";'>";
         $form_content .= "</div>";
         $form_content .= "</div>";
@@ -42,7 +42,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $form_content .= "<div class='form-radio'>";
         $form_content .= "<div class='label'>Service Level *</div>";
         $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='service-level' id='service-level-investor'/><label for='service-level-investor'>Investor</label>";
+        $form_content .= "<input type='radio' name='service-level' id='service-level-investor' checked/><label for='service-level-investor'>Investor</label>";
         $form_content .= "</div>";
         $form_content .= "<div class='form-radio-item'>";
         $form_content .= "<input type='radio' name='service-level' id='service-level-trader'/><label for='service-level-trader'>Trader</label>";
@@ -51,7 +51,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $form_content .= "<div class='form-radio'>";
         $form_content .= "<div class='label'>Would you like to receive SMS notifications? *</div>";
         $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-yes'/><label for='sms-notifications-yes'>Yes</label>";
+        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-yes' checked/><label for='sms-notifications-yes'>Yes</label>";
         $form_content .= "</div>";
         $form_content .= "<div class='form-radio-item'>";
         $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-no'/><label for='sms-notifications-no'>No</label>";
@@ -106,7 +106,11 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     //
     $content .= "<div class='page-subtitle-image-wrap'>";
     if( isset($page['subtitle']) && $page['subtitle'] != '' ) {
-        $content .= "<div class='page-subtitle'><div class='page-subtitle-wrap'><h2>" . $page['subtitle'] . "</h2></div></div>";
+        $content .= "<div class='page-subtitle'><div class='page-subtitle-wrap'><h2>" . $page['subtitle'] . "</h2>";
+        if( isset($page['tagline']) && $page['tagline'] != '' ) {
+            $content .= "<h3>" . $page['tagline'] . "</h3>";
+        }
+        $content .= "</div></div>";
     }
 
     //

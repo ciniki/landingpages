@@ -13,6 +13,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
 		. "ciniki_landingpages.title, "
 		. "ciniki_landingpages.short_title, "
 		. "ciniki_landingpages.subtitle, "
+		. "ciniki_landingpages.tagline, "
 		. "ciniki_landingpages.status, "
 		. "ciniki_landingpages.flags, "
 		. "ciniki_landingpages.primary_image_id "

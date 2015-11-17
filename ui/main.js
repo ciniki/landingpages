@@ -94,6 +94,7 @@ function ciniki_landingpages_main() {
 				'title':{'label':'Title', 'type':'text'},
 				'short_title':{'label':'Short Title', 'type':'text'},
 				'subtitle':{'label':'Subtitle', 'type':'text'},
+				'tagline':{'label':'Tagline', 'type':'text'},
 				'status':{'label':'Status', 'type':'toggle', 'toggles':{'0':'In Development', '10':'Active', '50':'Removed'}},
 //				'flags':{'label':'Options', 'type':'flags', 'toggles':{'1':{'name':''},}},
 //				'redirect_url':{'label':'Redirect URL', 'visible':'no'},
@@ -143,6 +144,7 @@ function ciniki_landingpages_main() {
 			this.setFieldValue(fid, 0, null, null);
 			return true;
 		};
+		this.page.addButton('save', 'Save', 'M.ciniki_landingpages_main.pageSave();');
 		this.page.addClose('Back');
 
 		//
