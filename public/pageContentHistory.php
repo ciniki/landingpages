@@ -41,7 +41,7 @@ function ciniki_landingpages_pageContentHistory($ciniki) {
 	// Check access to business_id as owner, or sys admin
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'checkAccess');
-	$rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageHistory');
+	$rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageContentHistory');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
