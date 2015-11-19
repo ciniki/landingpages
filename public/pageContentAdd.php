@@ -64,7 +64,7 @@ function ciniki_landingpages_pageContentAdd(&$ciniki) {
 		return $rc;
 	}
 	if( $rc['num_rows'] > 0 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2671', 'msg'=>'You already have an page with this permalink, please choose another name'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2682', 'msg'=>'You already have an page with this permalink, please choose another name'));
 	}
 
 	//
