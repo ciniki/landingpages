@@ -244,6 +244,12 @@ function ciniki_landingpages_main() {
                 p.sections.theme.fields['page-privatetheme-id'].options = {};
                 p.sections.theme.fields['page-privatetheme-id'].active = 'no';
             }
+            p.sections.form.fields['page-form'].options = {'':'None'};
+            if( rsp.forms != null ) {
+                for(var i in rsp.forms) {
+                    p.sections.form.fields['page-form'].options[rsp.forms[i].id] = rsp.forms[i].name;
+                }
+            }
 			p.refresh();
 			p.show(cb);
 		});

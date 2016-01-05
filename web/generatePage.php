@@ -27,55 +27,25 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     $page['javascript'] = '';
 
     //
-    // Find out if form
+    // Check for form
     //
     $form_content = '';
-//    if( isset($page['settings']['page-form']) && $page['settings']['page-form'] != '' ) {
-        $form_content .= "<form >";
-        $form_content .= "<div id='visible-fields'>";
-        $form_content .= "<div class='form-textfield'>";
-        $form_content .= "<label for='email'>Sign-up with your Email Address *</label>";
-        $form_content .= "<input type='email' id='email' name='email' placeholder='Enter your email address' onfocus='document.getElementById(\"hidden-fields-above\").className=\"\";'>";
-        $form_content .= "</div>";
-        $form_content .= "</div>";
-        $form_content .= "<div id='hidden-fields-above' class='hidden-fields'>";
-        $form_content .= "<div class='form-radio'>";
-        $form_content .= "<div class='label'>Service Level *</div>";
-        $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='service-level' id='service-level-investor' checked/><label for='service-level-investor'>Investor</label>";
-        $form_content .= "</div>";
-        $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='service-level' id='service-level-trader'/><label for='service-level-trader'>Trader</label>";
-        $form_content .= "</div>";
-        $form_content .= "</div>";
-        $form_content .= "<div class='form-radio'>";
-        $form_content .= "<div class='label'>Would you like to receive SMS notifications? *</div>";
-        $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-yes' checked/><label for='sms-notifications-yes'>Yes</label>";
-        $form_content .= "</div>";
-        $form_content .= "<div class='form-radio-item'>";
-        $form_content .= "<input type='radio' name='sms-notifications' id='sms-notifications-no'/><label for='sms-notifications-no'>No</label>";
-        $form_content .= "</div>";
-        $form_content .= "</div>";
-        $form_content .= "<div class='form-textfield'>";
-        $form_content .= "<label for='cellphone'>Cell Phone Number</label>";
-        $form_content .= "<input type='text' id='cellphone' name='cellphone' placeholder=''>";
-        $form_content .= "</div>";
-        $form_content .= "<p>By choosing to proceed, you agree to the <a href='javascript: popupShow(\"subscription-agreement\");'>Subscription Agreement</a> and to receive emails from Trend Alerts. You may opt out of the service and receipt of emails at any time.</p>";
-        $form_content .= "<div class='form-submit'>";
-        $form_content .= "<input type='submit' value='Start Your Free Trial Now' />";
-        $form_content .= "</div>";
-
-        $form_content .= "</div>";
-        $form_content .= "</form>";
-        $form2_content = preg_replace("/above/", 'below', $form_content);
-        $page['javascript'] .= ""
-			. "function updateForm() {"
-                . "console.log('test');"
-            . "}"
-            . "";
- //   }
-
+    if( isset($page['settings']['page-form']) && $page['settings']['page-form'] != '' && preg_match('/.*\..*\..*/', $page['settings']['page-form']) ) {
+        list($pkg, $mod, $form) = explode('.', $page['settings']['page-form']);
+        $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'landingpageForm');
+        if( $rc['stat'] == 'ok' ) {
+            $fn = $rc['function_call'];
+            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array('form'=>$form, 'landingpage_id'=>$page['id']));
+            if( $rc['stat'] == 'ok' && isset($rc['redirect_url']) ) {
+                error_log('redirect');
+                header('Location: ' . $rc['redirect_url']);
+                return array('stat'=>'exit', 'content'=>'');
+            } elseif( $rc['stat'] == 'ok' ) {
+                $form_content = $rc['form_content'];
+            }
+        }
+    }
+    $form2_content = preg_replace("/above/", 'below', $form_content);
 
 	//
 	// Generate the page content

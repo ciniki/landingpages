@@ -160,6 +160,22 @@ function ciniki_landingpages_pageGet($ciniki) {
     }
 
     //
+    // Get the forms
+    //
+    $rsp['forms'] = array();
+	foreach($ciniki['business']['modules'] as $module => $m) {
+		list($pkg, $mod) = explode('.', $module);
+		$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'landingpageForms');
+		if( $rc['stat'] == 'ok' ) {
+			$fn = $rc['function_call'];
+			$rc = $fn($ciniki, $args['business_id'], array());
+			if( $rc['stat'] == 'ok' && isset($rc['forms']) ) {
+                $rsp['forms'] = array_merge($rsp['forms'], $rc['forms']);
+			}
+		}
+	}
+
+    //
     // Get the private themes for the business
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'hooks', 'privateThemes');
