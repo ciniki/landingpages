@@ -37,7 +37,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
             $fn = $rc['function_call'];
             $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array('form'=>$form, 'landingpage_id'=>$page['id']));
             if( $rc['stat'] == 'ok' && isset($rc['redirect_url']) ) {
-                error_log('redirect');
+                header('HTTP/1.1 303 See Other');
                 header('Location: ' . $rc['redirect_url']);
                 return array('stat'=>'exit', 'content'=>'');
             } elseif( $rc['stat'] == 'ok' ) {
