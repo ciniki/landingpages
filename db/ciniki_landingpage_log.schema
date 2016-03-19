@@ -1,0 +1,36 @@
+#
+# Description
+# -----------
+# This table stores the access log entries for landing pages.
+#
+# Fields
+# ------
+# id:                       The ID assigned to the content.
+# uuid:                     The Universal Unique ID.
+# business_id:              The business the content is attached to.
+#
+# landingpage_id:           The ID of the landing page.
+#
+# log_date:                 The UTC date and time of the access.
+#
+# gclid:                    The google tracking code.
+#
+# referrer:                 The referrer for the access.
+#
+# date_added:               The date and time the record was added to the database.
+# last_updated:             The date and time the record was last changed.
+#
+create table ciniki_landingpage_log (
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    landingpage_id int not null,
+    log_date datetime not null,
+    query_string varchar(1000) not null,
+    referrer varchar(1000) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    unique index (uuid),
+    index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';
