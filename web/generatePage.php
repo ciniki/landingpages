@@ -238,7 +238,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     }
     $user_agent = '';
     if( isset($_SERVER['HTTP_USER_AGENT']) ) {
-        $query_string = $_SERVER['HTTP_USER_AGENT']; 
+        $user_agent = $_SERVER['HTTP_USER_AGENT']; 
     }
     $strsql = "INSERT INTO ciniki_landingpage_log (uuid, business_id, landingpage_id, log_date, query_string, referrer, user_agent, date_added, last_updated) VALUES ("
         . "UUID(), "
