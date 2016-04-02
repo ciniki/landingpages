@@ -54,7 +54,7 @@ function ciniki_landingpages_web_footer($ciniki, $settings, $page) {
 		}
 		if( isset($settings['site-footer-copyright-message']) && $settings['site-footer-copyright-message'] != '' ) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'processContent');
-			$rc = ciniki_web_processContent($ciniki, $settings['site-footer-copyright-message'], 'copyright');	
+			$rc = ciniki_web_processContent($ciniki, $settings, $settings['site-footer-copyright-message'], 'copyright');	
 			if( $rc['stat'] != 'ok' ) {
 				return $rc;
 			}
