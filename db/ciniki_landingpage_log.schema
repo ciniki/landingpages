@@ -28,6 +28,8 @@ create table ciniki_landingpage_log (
     log_date datetime not null,
     query_string varchar(1000) not null,
     referrer varchar(1000) not null,
+    user_agent varchar(1000) not null,
+    flags tinyint unsigned not null,
     date_added datetime not null,
     last_updated datetime not null,
     primary key (id),
