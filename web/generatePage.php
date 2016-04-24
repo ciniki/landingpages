@@ -14,6 +14,13 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
 
 	$landingpage_permalink = $ciniki['request']['uri_split'][0];
 
+    //
+    // Check for referrer link
+    //
+    if( isset($_GET['r']) && $_GET['r'] != '' ) {
+        $_SESSION['referrer_code'] = $_GET['r'];
+    }
+
 	//
 	// Load the landing page, settings, content, etc
 	//
