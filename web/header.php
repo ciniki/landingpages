@@ -48,9 +48,9 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
 		if( !isset($page['settings']['page-privatetheme-id'])
 			|| !isset($page['settings']['page-privatetheme-permalink']) 
             || $page['settings']['page-privatetheme-permalink'] == ''
-			|| !file_exists($ciniki['business']['web_cache_dir'] . '/' . $page['settings']['page-privatetheme-permalink']) 
+			|| !file_exists($ciniki['business']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) 
 			|| !isset($page['settings']['page-privatetheme-last-updated']) 
-			|| filemtime($ciniki['business']['web_cache_dir'] . '/' . $page['settings']['page-privatetheme-permalink']) < $page['settings']['page-privatetheme-last-updated']
+			|| filemtime($ciniki['business']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) < $page['settings']['page-privatetheme-last-updated']
 			) {
 			ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
 			$rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings, $page['settings']['page-privatetheme-id']);
@@ -175,7 +175,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
 	if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
 		&& isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' 
 		) {
-		$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/' . $settings['site-privatetheme-permalink'];
+		$theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
 		//
 		// Include the private theme files
 		//
