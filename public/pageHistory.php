@@ -10,10 +10,10 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:			The ID of the business to get the details for.
-// page_id:			    The ID of the page to get the history for.
-// field:				The field to get the history for. This can be any of the elements 
-//						returned by the ciniki.landingpages.get method.
+// business_id:         The ID of the business to get the details for.
+// page_id:             The ID of the page to get the history for.
+// field:               The field to get the history for. This can be any of the elements 
+//                      returned by the ciniki.landingpages.get method.
 //
 // Returns
 // -------
@@ -23,30 +23,30 @@
 // </history>
 //
 function ciniki_landingpages_pageHistory($ciniki) {
-	//
-	// Find all the required and optional arguments
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
-	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
-		'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
-		'field'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'field'), 
-		));
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$args = $rc['args'];
-	
-	//
-	// Check access to business_id as owner, or sys admin
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'checkAccess');
-	$rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageHistory');
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
+    //
+    // Find all the required and optional arguments
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
+    $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
+        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
+        'field'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'field'), 
+        ));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $args = $rc['args'];
+    
+    //
+    // Check access to business_id as owner, or sys admin
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'checkAccess');
+    $rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageHistory');
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbGetModuleHistory');
-	return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.landingpages', 'ciniki_landingpage_history', $args['business_id'], 'ciniki_landingpages', $args['page_id'], $args['field']);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbGetModuleHistory');
+    return ciniki_core_dbGetModuleHistory($ciniki, 'ciniki.landingpages', 'ciniki_landingpage_history', $args['business_id'], 'ciniki_landingpages', $args['page_id'], $args['field']);
 }
 ?>

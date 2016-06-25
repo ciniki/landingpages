@@ -7,8 +7,8 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:			The business ID to check the session user against.
-// method:				The requested method.
+// business_id:         The business ID to check the session user against.
+// method:              The requested method.
 //
 // Returns
 // -------
@@ -56,15 +56,15 @@ function ciniki_landingpages_settingsUpdate(&$ciniki, $business_id, $page_id) {
         'page-form-below',
     );
 
-	//
-	// Check each valid setting and see if a new value was passed in the arguments for it.
-	// Insert or update the entry in the ciniki_donation_settings table
-	//
-	foreach($settings_fields as $field) {
+    //
+    // Check each valid setting and see if a new value was passed in the arguments for it.
+    // Insert or update the entry in the ciniki_donation_settings table
+    //
+    foreach($settings_fields as $field) {
         //
         // Check if the setting was passed as an argument
         //
-		if( isset($ciniki['request']['args'][$field]) ) {
+        if( isset($ciniki['request']['args'][$field]) ) {
             //
             // Add if setting does not already exist
             //

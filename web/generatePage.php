@@ -4,15 +4,15 @@
 // This module creates their own header and footer.
 //
 function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
-	
-	//
-	// Check for page url
-	//
-	if( !isset($ciniki['request']['uri_split'][0]) || $ciniki['request']['uri_split'][0] == '' ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2652', 'msg'=>"I'm sorry, but we can't seem to find the page you requested."));
-	}
+    
+    //
+    // Check for page url
+    //
+    if( !isset($ciniki['request']['uri_split'][0]) || $ciniki['request']['uri_split'][0] == '' ) {
+        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2652', 'msg'=>"I'm sorry, but we can't seem to find the page you requested."));
+    }
 
-	$landingpage_permalink = $ciniki['request']['uri_split'][0];
+    $landingpage_permalink = $ciniki['request']['uri_split'][0];
 
     //
     // Check for referrer link
@@ -21,15 +21,15 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $_SESSION['referrer_code'] = $_GET['r'];
     }
 
-	//
-	// Load the landing page, settings, content, etc
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'pageLoad');
-	$rc = ciniki_landingpages_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], $landingpage_permalink);
-	if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2653', 'msg'=>"I'm sorry, but we can't seem to find the page you requested.", 'err'=>$rc['err']));
-	}
-	$page = $rc['page'];
+    //
+    // Load the landing page, settings, content, etc
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'pageLoad');
+    $rc = ciniki_landingpages_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], $landingpage_permalink);
+    if( $rc['stat'] != 'ok' ) {
+        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2653', 'msg'=>"I'm sorry, but we can't seem to find the page you requested.", 'err'=>$rc['err']));
+    }
+    $page = $rc['page'];
 
     $page['javascript'] = '';
 
@@ -54,20 +54,20 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     }
     $form2_content = preg_replace("/above/", 'below', $form_content);
 
-	//
-	// Generate the page content
-	//
-	$content = '';	
+    //
+    // Generate the page content
+    //
+    $content = '';  
 
-	//
-	// Generate the header
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'header');
-	$rc = ciniki_landingpages_web_header($ciniki, $settings, $page);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$content .= $rc['content'];
+    //
+    // Generate the header
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'header');
+    $rc = ciniki_landingpages_web_header($ciniki, $settings, $page);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $content .= $rc['content'];
 
     $content .= "<div id='content'>";
 
@@ -114,8 +114,8 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $content .= "</div></div>";
     }
 
-	//
-	// Add the content
+    //
+    // Add the content
     //
     $content .= "<article>";
     $content .= "<div class='entry-content'>";
@@ -191,7 +191,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
 
         $page['javascript'] .= ""
             . "var curItem = '" . $cur_item . "';"
-			. "function switchContent(p) {"
+            . "function switchContent(p) {"
                 . "document.getElementById('i-'+curItem).className='item-menu-item';"
                 . "document.getElementById('d-'+curItem).className='item-menu-item';"
                 . "document.getElementById('c-'+curItem).className='item-content';"
@@ -222,15 +222,15 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
 
     $content .= "</div>";
 
-	//
-	// Generate the footer
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'footer');
-	$rc = ciniki_landingpages_web_footer($ciniki, $settings, $page);
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$content .= $rc['content'];
+    //
+    // Generate the footer
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'footer');
+    $rc = ciniki_landingpages_web_footer($ciniki, $settings, $page);
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $content .= $rc['content'];
 
     //
     // Log the access
@@ -264,6 +264,6 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         error_log("WEB: unable to log landingpage visit: " . print_r($rc['err'], true));
     }
 
-	return array('stat'=>'ok', 'content'=>$content);
+    return array('stat'=>'ok', 'content'=>$content);
 }
 ?>

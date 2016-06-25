@@ -28,6 +28,6 @@ function ciniki_landingpages_botCheck($ciniki, $user_agent) {
     if( strstr($user_agent, 'Twitterbot') !== false ) { return array('stat'=>'ok', 'bot'=>'yes'); }
     if( strstr($user_agent, 'Wotbox') !== false ) { return array('stat'=>'ok', 'bot'=>'yes'); }
 
-	return array('stat'=>'ok', 'bot'=>'no');
+    return array('stat'=>'ok', 'bot'=>'no');
 }
 ?>

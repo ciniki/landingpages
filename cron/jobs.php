@@ -11,12 +11,12 @@
 // -------
 //
 function ciniki_landingpages_cron_jobs($ciniki) {
-	ciniki_cron_logMsg($ciniki, 0, array('code'=>'0', 'msg'=>'Checking for landingpages jobs', 'severity'=>'5'));
+    ciniki_cron_logMsg($ciniki, 0, array('code'=>'0', 'msg'=>'Checking for landingpages jobs', 'severity'=>'5'));
 
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'botCheck');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'botCheck');
 
     //
     // Get the list of landingpage logs from the last 10 minutes to identify bots
@@ -29,7 +29,7 @@ function ciniki_landingpages_cron_jobs($ciniki) {
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.mail', 'last_sent');
     if( $rc['stat'] != 'ok' ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3260', 'msg'=>'Unable to get list of landingpage logs.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3260', 'msg'=>'Unable to get list of landingpage logs.', 'err'=>$rc['err']));
     }
     if( isset($rc['rows']) ) {
         foreach($rc['rows'] as $row) {
@@ -41,5 +41,5 @@ function ciniki_landingpages_cron_jobs($ciniki) {
         }
     }
 
-	return array('stat'=>'ok');
+    return array('stat'=>'ok');
 }

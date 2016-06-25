@@ -8,25 +8,25 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:		The ID of the business to get landingpages for.
+// business_id:     The ID of the business to get landingpages for.
 //
 // Returns
 // -------
 //
 function ciniki_landingpages_pageGet($ciniki) {
-	//
-	// Find all the required and optional arguments
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
-	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
-		'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
-		));
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$args = $rc['args'];
-	
+    //
+    // Find all the required and optional arguments
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
+    $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
+        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
+        ));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $args = $rc['args'];
+    
     //  
     // Check access to business_id as owner, or sys admin. 
     //  
@@ -44,37 +44,37 @@ function ciniki_landingpages_pageGet($ciniki) {
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
-	$maps = $rc['maps'];
+    $maps = $rc['maps'];
 
-	//
-	// Send back the default information
-	//
-	if( $args['page_id'] == 0 ) {
-		$rsp = array('stat'=>'ok', 'page'=>array(
-			'id'=>'0',
-			'name'=>'',
-			'permalink'=>'',
-			'title'=>'',
-			'short_title'=>'',
-			'subtitle'=>'',
-			'tagline'=>'',
-			'status'=>'0',
-			'flags'=>'0',
-			'primary_image_id'=>'0',
-			'redirect_url'=>'',
-			'theme'=>'default',
-			'layout'=>'default',
-			'privatetheme-id'=>'0',
-			'header-social-display'=>'yes',
-			'header-image-display'=>'yes',
-			'header-menu-display'=>'yes',
-			'page-form'=>'0',
-			'page-form-above'=>'no',
-			'page-form-below'=>'yes',
-			'footer-social-display'=>'yes',
-			'items'=>array(),
-			));
-	} else {
+    //
+    // Send back the default information
+    //
+    if( $args['page_id'] == 0 ) {
+        $rsp = array('stat'=>'ok', 'page'=>array(
+            'id'=>'0',
+            'name'=>'',
+            'permalink'=>'',
+            'title'=>'',
+            'short_title'=>'',
+            'subtitle'=>'',
+            'tagline'=>'',
+            'status'=>'0',
+            'flags'=>'0',
+            'primary_image_id'=>'0',
+            'redirect_url'=>'',
+            'theme'=>'default',
+            'layout'=>'default',
+            'privatetheme-id'=>'0',
+            'header-social-display'=>'yes',
+            'header-image-display'=>'yes',
+            'header-menu-display'=>'yes',
+            'page-form'=>'0',
+            'page-form-above'=>'no',
+            'page-form-below'=>'yes',
+            'footer-social-display'=>'yes',
+            'items'=>array(),
+            ));
+    } else {
 
         //
         // Get the list of landing pages
@@ -163,17 +163,17 @@ function ciniki_landingpages_pageGet($ciniki) {
     // Get the forms
     //
     $rsp['forms'] = array();
-	foreach($ciniki['business']['modules'] as $module => $m) {
-		list($pkg, $mod) = explode('.', $module);
-		$rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'landingpageForms');
-		if( $rc['stat'] == 'ok' ) {
-			$fn = $rc['function_call'];
-			$rc = $fn($ciniki, $args['business_id'], array());
-			if( $rc['stat'] == 'ok' && isset($rc['forms']) ) {
+    foreach($ciniki['business']['modules'] as $module => $m) {
+        list($pkg, $mod) = explode('.', $module);
+        $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'landingpageForms');
+        if( $rc['stat'] == 'ok' ) {
+            $fn = $rc['function_call'];
+            $rc = $fn($ciniki, $args['business_id'], array());
+            if( $rc['stat'] == 'ok' && isset($rc['forms']) ) {
                 $rsp['forms'] = array_merge($rsp['forms'], $rc['forms']);
-			}
-		}
-	}
+            }
+        }
+    }
 
     //
     // Get the private themes for the business

@@ -31,11 +31,11 @@ function ciniki_landingpages_pageUpdate(&$ciniki) {
         'permalink'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Permalink'), 
         'title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Title'), 
         'short_title'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Short Title'), 
-		'subtitle'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Subtitle'), 
-		'tagline'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Tagline'), 
+        'subtitle'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Subtitle'), 
+        'tagline'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Tagline'), 
         'status'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Status'),
         'flags'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Flags'),
-		'primary_image_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image'),
+        'primary_image_id'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Image'),
         'redirect_url'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Redirect URL'), 
         )); 
     if( $rc['stat'] != 'ok' ) { 
@@ -99,10 +99,10 @@ function ciniki_landingpages_pageUpdate(&$ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'settingsUpdate');
     $rc = ciniki_landingpages_settingsUpdate($ciniki, $args['business_id'], $args['page_id']);
-	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.landingpages');
-		return $rc;
-	}
+    if( $rc['stat'] != 'ok' ) {
+        ciniki_core_dbTransactionRollback($ciniki, 'ciniki.landingpages');
+        return $rc;
+    }
     
     //
     // Commit the transaction
