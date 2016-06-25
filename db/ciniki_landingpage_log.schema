@@ -15,7 +15,18 @@
 #
 # gclid:                    The google tracking code.
 #
+# query_string:             Any arguments passed to the landing page.
+#
 # referrer:                 The referrer for the access.
+# 
+# user_agent:               The user agent string from the client.
+#
+# flags:                    Options set on the log entry.
+#
+#                           0x01 - botCheck true, this entry was made by a bot.
+#                           0x02 - 
+#                           0x04 - 
+#                           0x08 - 
 #
 # date_added:               The date and time the record was added to the database.
 # last_updated:             The date and time the record was last changed.
