@@ -29,7 +29,7 @@ function ciniki_landingpages_cron_jobs($ciniki) {
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.mail', 'last_sent');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'3260', 'msg'=>'Unable to get list of landingpage logs.', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.1', 'msg'=>'Unable to get list of landingpage logs.', 'err'=>$rc['err']));
     }
     if( isset($rc['rows']) ) {
         foreach($rc['rows'] as $row) {

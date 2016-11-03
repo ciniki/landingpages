@@ -62,7 +62,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['item']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2669', 'msg'=>'The content does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.8', 'msg'=>'The content does not exist'));
     }
     $item = $rc['item'];
     $args['item_id'] = $rc['item']['id'];
@@ -85,7 +85,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
             return $rc;
         }
         if( $rc['num_rows'] > 0 ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2681', 'msg'=>'You already have an page with this permalink, please choose another name'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.9', 'msg'=>'You already have an page with this permalink, please choose another name'));
         }
     }
 

@@ -28,7 +28,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         return $rc;
     }
     if( !isset($rc['landingpage']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2654', 'msg'=>'Page does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.14', 'msg'=>'Page does not exist'));
     }
     $page = $rc['landingpage'];
     
@@ -81,7 +81,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
             $dt = new DateTime($rc['theme']['last_updated'], new DateTimeZone('UTC'));
             $page['settings']['page-privatetheme-last-updated'] = $dt->format('U');
         } else {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2675', 'msg'=>'No theme specified'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.15', 'msg'=>'No theme specified'));
         }
         
         //
@@ -133,7 +133,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         return $rc;
     }
     if( !isset($rc['items']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2655', 'msg'=>'Page does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.16', 'msg'=>'Page does not exist'));
     }
     $page['items'] = $rc['items'];
 

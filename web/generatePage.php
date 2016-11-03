@@ -9,7 +9,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     // Check for page url
     //
     if( !isset($ciniki['request']['uri_split'][0]) || $ciniki['request']['uri_split'][0] == '' ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2652', 'msg'=>"I'm sorry, but we can't seem to find the page you requested."));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.landingpages.12', 'msg'=>"I'm sorry, but we can't seem to find the page you requested."));
     }
 
     $landingpage_permalink = $ciniki['request']['uri_split'][0];
@@ -27,7 +27,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'pageLoad');
     $rc = ciniki_landingpages_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], $landingpage_permalink);
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'404', 'err'=>array('pkg'=>'ciniki', 'code'=>'2653', 'msg'=>"I'm sorry, but we can't seem to find the page you requested.", 'err'=>$rc['err']));
+        return array('stat'=>'404', 'err'=>array('code'=>'ciniki.landingpages.13', 'msg'=>"I'm sorry, but we can't seem to find the page you requested.", 'err'=>$rc['err']));
     }
     $page = $rc['page'];
 

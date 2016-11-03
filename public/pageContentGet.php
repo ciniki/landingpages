@@ -111,7 +111,7 @@ function ciniki_landingpages_pageContentGet($ciniki) {
         return $rc;
     }
     if( !isset($rc['content']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2680', 'msg'=>'Content does not exist'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.landingpages.7', 'msg'=>'Content does not exist'));
     }
     if( isset($rc['content']) ) {
         $rsp['content'] = $rc['content'];
