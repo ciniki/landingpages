@@ -25,7 +25,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     // Load the landing page, settings, content, etc
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'web', 'pageLoad');
-    $rc = ciniki_landingpages_web_pageLoad($ciniki, $settings, $ciniki['request']['business_id'], $landingpage_permalink);
+    $rc = ciniki_landingpages_web_pageLoad($ciniki, $settings, $ciniki['request']['tnid'], $landingpage_permalink);
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'404', 'err'=>array('code'=>'ciniki.landingpages.13', 'msg'=>"I'm sorry, but we can't seem to find the page you requested.", 'err'=>$rc['err']));
     }
@@ -42,7 +42,7 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'web', 'landingpageForm');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $settings, $ciniki['request']['business_id'], array('form'=>$form, 'landingpage_id'=>$page['id']));
+            $rc = $fn($ciniki, $settings, $ciniki['request']['tnid'], array('form'=>$form, 'landingpage_id'=>$page['id']));
             if( $rc['stat'] == 'ok' && isset($rc['redirect_url']) ) {
                 header('HTTP/1.1 303 See Other');
                 header('Location: ' . $rc['redirect_url']);
@@ -247,9 +247,9 @@ function ciniki_landingpages_web_generatePage(&$ciniki, $settings) {
     if( isset($_SERVER['HTTP_USER_AGENT']) ) {
         $user_agent = $_SERVER['HTTP_USER_AGENT']; 
     }
-    $strsql = "INSERT INTO ciniki_landingpage_log (uuid, business_id, landingpage_id, log_date, query_string, referrer, user_agent, date_added, last_updated) VALUES ("
+    $strsql = "INSERT INTO ciniki_landingpage_log (uuid, tnid, landingpage_id, log_date, query_string, referrer, user_agent, date_added, last_updated) VALUES ("
         . "UUID(), "
-        . "'" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "', "
+        . "'" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "', "
         . "'" . ciniki_core_dbQuote($ciniki, $page['id']) . "', "
         . "UTC_TIMESTAMP(), "
         . "'" . ciniki_core_dbQuote($ciniki, $query_string) . "', "

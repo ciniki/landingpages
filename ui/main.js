@@ -1,5 +1,5 @@
 //
-// This app will handle the listing, additions and deletions of landingpages.  These are associated business.
+// This app will handle the listing, additions and deletions of landingpages.  These are associated tenant.
 //
 function ciniki_landingpages_main() {
     // 
@@ -127,7 +127,7 @@ function ciniki_landingpages_main() {
             return this.data[i];
         };
         this.page.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.landingpages.pageHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.landingpages.pageHistory', 'args':{'tnid':M.curTenantID, 
                 'page_id':this.page_id, 'field':i}};
         }
         this.page.cellValue = function(s, i, j, d) {
@@ -175,7 +175,7 @@ function ciniki_landingpages_main() {
             };  
         this.content.fieldValue = function(s, i, d) { return this.data[i]; }
         this.content.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.landingpages.pageContentHistory', 'args':{'business_id':M.curBusinessID, 
+            return {'method':'ciniki.landingpages.pageContentHistory', 'args':{'tnid':M.curTenantID, 
                 'content_id':this.content_id, 'field':i}};
         }
         this.content.addDropImage = function(iid) {
@@ -213,7 +213,7 @@ function ciniki_landingpages_main() {
 
     this.menuShow = function(cb) {
         this.menu.data = {};
-        M.api.getJSONCb('ciniki.landingpages.pageList', {'business_id':M.curBusinessID, 'org':'status'}, function(rsp) {
+        M.api.getJSONCb('ciniki.landingpages.pageList', {'tnid':M.curTenantID, 'org':'status'}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -227,7 +227,7 @@ function ciniki_landingpages_main() {
 
     this.pageEdit = function(cb, pid) {
         if( pid != null ) { this.page.page_id = pid; }
-        M.api.getJSONCb('ciniki.landingpages.pageGet', {'business_id':M.curBusinessID, 'page_id':this.page.page_id}, function(rsp) {
+        M.api.getJSONCb('ciniki.landingpages.pageGet', {'tnid':M.curTenantID, 'page_id':this.page.page_id}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -260,7 +260,7 @@ function ciniki_landingpages_main() {
             var c = this.page.serializeForm('no');
             if( c != '' ) {
                 console.log(c);
-                M.api.postJSONCb('ciniki.landingpages.pageUpdate', {'business_id':M.curBusinessID, 'page_id':this.page.page_id}, c,
+                M.api.postJSONCb('ciniki.landingpages.pageUpdate', {'tnid':M.curTenantID, 'page_id':this.page.page_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
                             M.api.err(rsp);
@@ -288,7 +288,7 @@ function ciniki_landingpages_main() {
                 return false;
             }
             var c = this.page.serializeForm('no');
-            M.api.postJSONCb('ciniki.landingpages.pageAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.landingpages.pageAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -317,7 +317,7 @@ function ciniki_landingpages_main() {
                 return false;
             }
             var c = this.page.serializeForm('yes');
-            M.api.postJSONCb('ciniki.landingpages.pageAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.landingpages.pageAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -327,7 +327,7 @@ function ciniki_landingpages_main() {
             });
         } else {
             if( cid != null ) { this.content.content_id = cid; }
-            M.api.getJSONCb('ciniki.landingpages.pageContentGet', {'business_id':M.curBusinessID, 
+            M.api.getJSONCb('ciniki.landingpages.pageContentGet', {'tnid':M.curTenantID, 
                 'page_id':this.page.page_id, 'content_id':this.content.content_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -345,7 +345,7 @@ function ciniki_landingpages_main() {
         if( this.content.content_id > 0 ) {
             var c = this.content.serializeForm('no');
             if( c != '' ) {
-                M.api.postJSONCb('ciniki.landingpages.pageContentUpdate', {'business_id':M.curBusinessID, 
+                M.api.postJSONCb('ciniki.landingpages.pageContentUpdate', {'tnid':M.curTenantID, 
                     'page_id':this.page.page_id, 'content_id':this.content.content_id}, c,
                     function(rsp) {
                         if( rsp.stat != 'ok' ) {
@@ -359,7 +359,7 @@ function ciniki_landingpages_main() {
             }
         } else {
             var c = this.content.serializeForm('yes');
-            M.api.postJSONCb('ciniki.landingpages.pageContentAdd', {'business_id':M.curBusinessID, 'page_id':this.page.page_id}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.landingpages.pageContentAdd', {'tnid':M.curTenantID, 'page_id':this.page.page_id}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -375,7 +375,7 @@ function ciniki_landingpages_main() {
     this.contentDelete = function() {
         if( confirm("Are you sure you want to remove '" + this.event.data.name + "' as an event ?") ) {
             var rsp = M.api.getJSONCb('ciniki.landingpages.eventDelete', 
-                {'business_id':M.curBusinessID, 'event_id':M.ciniki_landingpages_main.event.event_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'event_id':M.ciniki_landingpages_main.event.event_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

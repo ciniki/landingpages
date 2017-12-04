@@ -7,14 +7,14 @@
 // Arguments
 // ---------
 // ciniki:
-// business_id:         The business ID to check the session user against.
+// tnid:         The tenant ID to check the session user against.
 // method:              The requested method.
 //
 // Returns
 // -------
 // <rsp stat='ok' />
 //
-function ciniki_landingpages_settingsUpdate(&$ciniki, $business_id, $page_id) {
+function ciniki_landingpages_settingsUpdate(&$ciniki, $tnid, $page_id) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
@@ -25,7 +25,7 @@ function ciniki_landingpages_settingsUpdate(&$ciniki, $business_id, $page_id) {
     //
     $strsql = "SELECT id, detail_key, detail_value "
         . "FROM ciniki_landingpage_settings "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND page_id = '" . ciniki_core_dbQuote($ciniki, $page_id) . "' "
         . "";
     $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.landingpages', array(
@@ -74,7 +74,7 @@ function ciniki_landingpages_settingsUpdate(&$ciniki, $business_id, $page_id) {
                     'detail_key'=>$field,
                     'detail_value'=>$ciniki['request']['args'][$field]
                     );
-                $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.landingpages.setting', $args, 0x04);
+                $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.landingpages.setting', $args, 0x04);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }
@@ -86,7 +86,7 @@ function ciniki_landingpages_settingsUpdate(&$ciniki, $business_id, $page_id) {
                 $args = array(
                     'detail_value'=>$ciniki['request']['args'][$field]
                     );
-                $rc = ciniki_core_objectUpdate($ciniki, $business_id, 'ciniki.landingpages.setting', $settings[$field]['id'], $args, 0x04);
+                $rc = ciniki_core_objectUpdate($ciniki, $tnid, 'ciniki.landingpages.setting', $settings[$field]['id'], $args, 0x04);
                 if( $rc['stat'] != 'ok' ) {
                     return $rc;
                 }

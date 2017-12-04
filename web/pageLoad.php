@@ -3,7 +3,7 @@
 // This is the override page generator for the landing pages module. 
 // This module creates their own header and footer.
 //
-function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $permalink) {
+function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $tnid, $permalink) {
     
     //
     // Get the landing page details
@@ -19,7 +19,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         . "ciniki_landingpages.primary_image_id "
         . "FROM ciniki_landingpages "
         . "WHERE ciniki_landingpages.permalink = '" . ciniki_core_dbQuote($ciniki, $permalink) . "' "
-        . "AND ciniki_landingpages.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+        . "AND ciniki_landingpages.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
         . "AND ciniki_landingpages.status > 0 "
         . "AND ciniki_landingpages.status < 50 "
         . "";
@@ -38,7 +38,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
     $strsql = "SELECT detail_key, detail_value "
         . "FROM ciniki_landingpage_settings "
         . "WHERE (page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' OR page_id = 0) "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
         . "ORDER BY page_id "       // Make sure page_id = 0 is first, and overwritten by same detail_key names for page
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList2');
@@ -66,7 +66,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         //
         $strsql = "SELECT id, permalink, last_updated "
             . "FROM ciniki_web_themes "
-            . "WHERE ciniki_web_themes.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_web_themes.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_web_themes.id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
             . "ORDER BY date_added DESC "
             . "LIMIT 1 "
@@ -89,7 +89,7 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         //
         $strsql = "SELECT detail_key, detail_value "
             . "FROM ciniki_web_theme_settings "
-            . "WHERE ciniki_web_theme_settings.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+            . "WHERE ciniki_web_theme_settings.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
             . "AND ciniki_web_theme_settings.theme_id = '" . ciniki_core_dbQuote($ciniki, $settings['site-privatetheme-id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList2');
@@ -118,9 +118,9 @@ function ciniki_landingpages_web_pageLoad(&$ciniki, &$settings, $business_id, $p
         . "ciniki_landingpage_content.content "
         . "FROM ciniki_landingpage_items, ciniki_landingpage_content "
         . "WHERE ciniki_landingpage_items.page_id = '" . ciniki_core_dbQuote($ciniki, $page['id']) . "' "
-        . "AND ciniki_landingpage_items.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+        . "AND ciniki_landingpage_items.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
         . "AND ciniki_landingpage_items.content_id = ciniki_landingpage_content.id "
-        . "AND ciniki_landingpage_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+        . "AND ciniki_landingpage_content.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
         . "ORDER BY ciniki_landingpage_items.sequence, ciniki_landingpage_items.menu_title "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');

@@ -8,7 +8,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:     The ID of the business to get landingpages for.
+// tnid:     The ID of the tenant to get landingpages for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_landingpages_pageGet($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
         ));
     if( $rc['stat'] != 'ok' ) {
@@ -28,10 +28,10 @@ function ciniki_landingpages_pageGet($ciniki) {
     $args = $rc['args'];
     
     //  
-    // Check access to business_id as owner, or sys admin. 
+    // Check access to tnid as owner, or sys admin. 
     //  
     ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'checkAccess');
-    $rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageGet');
+    $rc = ciniki_landingpages_checkAccess($ciniki, $args['tnid'], 'ciniki.landingpages.pageGet');
     if( $rc['stat'] != 'ok' ) { 
         return $rc;
     }   
@@ -91,7 +91,7 @@ function ciniki_landingpages_pageGet($ciniki) {
             . "ciniki_landingpages.primary_image_id, "
             . "ciniki_landingpages.redirect_url "
             . "FROM ciniki_landingpages "
-            . "WHERE ciniki_landingpages.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_landingpages.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_landingpages.id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryTree');
@@ -109,7 +109,7 @@ function ciniki_landingpages_pageGet($ciniki) {
         //
         $strsql = "SELECT detail_key, detail_value "
             . "FROM ciniki_landingpage_settings "
-            . "WHERE ciniki_landingpage_settings.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_landingpage_settings.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_landingpage_settings.page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList2');
@@ -135,10 +135,10 @@ function ciniki_landingpages_pageGet($ciniki) {
             . "ciniki_landingpage_content.title, "
             . "ciniki_landingpage_content.content_type "
             . "FROM ciniki_landingpage_items, ciniki_landingpage_content "
-            . "WHERE ciniki_landingpage_items.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "WHERE ciniki_landingpage_items.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "AND ciniki_landingpage_items.page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' "
             . "AND ciniki_landingpage_items.content_id = ciniki_landingpage_content.id "
-            . "AND ciniki_landingpage_content.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+            . "AND ciniki_landingpage_content.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
             . "ORDER BY ciniki_landingpage_items.sequence, ciniki_landingpage_items.menu_title "
             . "";
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
@@ -163,12 +163,12 @@ function ciniki_landingpages_pageGet($ciniki) {
     // Get the forms
     //
     $rsp['forms'] = array();
-    foreach($ciniki['business']['modules'] as $module => $m) {
+    foreach($ciniki['tenant']['modules'] as $module => $m) {
         list($pkg, $mod) = explode('.', $module);
         $rc = ciniki_core_loadMethod($ciniki, $pkg, $mod, 'hooks', 'landingpageForms');
         if( $rc['stat'] == 'ok' ) {
             $fn = $rc['function_call'];
-            $rc = $fn($ciniki, $args['business_id'], array());
+            $rc = $fn($ciniki, $args['tnid'], array());
             if( $rc['stat'] == 'ok' && isset($rc['forms']) ) {
                 $rsp['forms'] = array_merge($rsp['forms'], $rc['forms']);
             }
@@ -176,10 +176,10 @@ function ciniki_landingpages_pageGet($ciniki) {
     }
 
     //
-    // Get the private themes for the business
+    // Get the private themes for the tenant
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'hooks', 'privateThemes');
-    $rc = ciniki_web_hooks_privateThemes($ciniki, $args['business_id'], array());
+    $rc = ciniki_web_hooks_privateThemes($ciniki, $args['tnid'], array());
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }

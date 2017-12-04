@@ -31,7 +31,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
     $content .= "<!DOCTYPE html>\n"
         . "<html>\n"
         . "<head>\n"
-        . "<title>" . $ciniki['business']['details']['name'];
+        . "<title>" . $ciniki['tenant']['details']['name'];
     if( isset($page['short_title']) && $page['short_title'] != '' ) {
         $content .= " - " . $page['short_title'];
     } elseif( isset($page['title']) && $page['title'] != '' ) {
@@ -41,19 +41,19 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
         . "<link rel='icon' href='/ciniki-mods/core/ui/themes/default/img/favicon.png' type='image/png' />\n"
         . "";
 
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0100) > 0 ) {
         //
         // FIXME: Check if theme files in directory are up to date
         //
         if( !isset($page['settings']['page-privatetheme-id'])
             || !isset($page['settings']['page-privatetheme-permalink']) 
             || $page['settings']['page-privatetheme-permalink'] == ''
-            || !file_exists($ciniki['business']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) 
+            || !file_exists($ciniki['tenant']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) 
             || !isset($page['settings']['page-privatetheme-last-updated']) 
-            || filemtime($ciniki['business']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) < $page['settings']['page-privatetheme-last-updated']
+            || filemtime($ciniki['tenant']['web_cache_dir'] . '/theme-' . $page['settings']['page-privatetheme-permalink']) < $page['settings']['page-privatetheme-last-updated']
             ) {
             ciniki_core_loadMethod($ciniki, 'ciniki', 'web', 'private', 'updatePrivateTheme');
-            $rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['business_id'], $settings, $page['settings']['page-privatetheme-id']);
+            $rc = ciniki_web_updatePrivateTheme($ciniki, $ciniki['request']['tnid'], $settings, $page['settings']['page-privatetheme-id']);
             if( $rc['stat'] != 'ok' ) {
                 return $rc;
             }
@@ -69,7 +69,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
                 . "ciniki_web_theme_content.content "
                 . "FROM ciniki_web_theme_content "
                 . "WHERE ciniki_web_theme_content.theme_id = '" . ciniki_core_dbQuote($ciniki, $page['settings']['page-privatetheme-id']) . "' "
-                . "AND ciniki_web_theme_content.business_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['business_id']) . "' "
+                . "AND ciniki_web_theme_content.tnid = '" . ciniki_core_dbQuote($ciniki, $ciniki['request']['tnid']) . "' "
                 . "AND ciniki_web_theme_content.content_type = 'csshref' "
                 . "AND ciniki_web_theme_content.status = 10 "
                 . "ORDER BY ciniki_web_theme_content.media, ciniki_web_theme_content.sequence "
@@ -172,10 +172,10 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
     //
     // Check for private theme files
     //
-    if( isset($ciniki['business']['modules']['ciniki.web']['flags']) && ($ciniki['business']['modules']['ciniki.web']['flags']&0x0100) > 0 
+    if( isset($ciniki['tenant']['modules']['ciniki.web']['flags']) && ($ciniki['tenant']['modules']['ciniki.web']['flags']&0x0100) > 0 
         && isset($settings['site-privatetheme-permalink']) && $settings['site-privatetheme-permalink'] != '' 
         ) {
-        $theme_cache_dir = $ciniki['business']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
+        $theme_cache_dir = $ciniki['tenant']['web_cache_dir'] . '/theme-' . $settings['site-privatetheme-permalink'];
         //
         // Include the private theme files
         //
@@ -215,7 +215,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
     // Check for header Open Graph (Facebook) object information, for better linking into facebook
     //
     if( isset($ciniki['response']['head']['og']) ) {
-        $og_site_name = $ciniki['business']['details']['name'];
+        $og_site_name = $ciniki['tenant']['details']['name'];
         foreach($ciniki['response']['head']['og'] as $og_type => $og_value) {
             if( $og_value != '' ) {
                 if( $og_type == 'site_name' ) {
@@ -228,7 +228,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
             $content .= "<meta property=\"og:site_name\" content=\"" . preg_replace('/"/', "\'", $og_site_name) . "\"/>\n";
         }
         if( $ciniki['response']['head']['og']['title'] == '' && isset($page['title']) && $page['title'] != '' ) {
-            $content .= '<meta property="og:title" content="' . $ciniki['business']['details']['name'] . ' - ' . $page['title'] . '"/>' . "\n";
+            $content .= '<meta property="og:title" content="' . $ciniki['tenant']['details']['name'] . ' - ' . $page['title'] . '"/>' . "\n";
         }
     }
 
@@ -304,7 +304,7 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
         $page_container_class .= 'signin';
     }
     if( isset($settings['site-logo-display']) && $settings['site-logo-display'] == 'yes' 
-        && isset($ciniki['business']['details']['logo_id']) && $ciniki['business']['details']['logo_id'] > 0 ) {
+        && isset($ciniki['tenant']['details']['logo_id']) && $ciniki['tenant']['details']['logo_id'] > 0 ) {
         if( $page_container_class != '' ) { $page_container_class .= " "; }
         $page_container_class .= 'logo';
     }
@@ -351,15 +351,15 @@ function ciniki_landingpages_web_header($ciniki, $settings, $page) {
                 . "<img alt='Home' src='" . $page_home_image['url'] . "' />"
                 . "</div>";
         }
-        if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
+        if( isset($ciniki['tenant']['details']['tagline']) && $ciniki['tenant']['details']['tagline'] != '' ) {
             $content .= "<div class='title-block'>";
         } else {
             $content .= "<div class='title-block no-tagline'>";
         }
         $content .= "<h1 id='site-title'>";
-        $content .= "<span class='title'>" . $ciniki['business']['details']['name'] . "</span></h1>\n";
-        if( isset($ciniki['business']['details']['tagline']) && $ciniki['business']['details']['tagline'] != '' ) {
-            $content .= "<h2 id='site-description'>" . $ciniki['business']['details']['tagline'] . "</h2>\n";
+        $content .= "<span class='title'>" . $ciniki['tenant']['details']['name'] . "</span></h1>\n";
+        if( isset($ciniki['tenant']['details']['tagline']) && $ciniki['tenant']['details']['tagline'] != '' ) {
+            $content .= "<h2 id='site-description'>" . $ciniki['tenant']['details']['tagline'] . "</h2>\n";
         }
         $content .= "</div>";
         $content .= "</hgroup>\n";

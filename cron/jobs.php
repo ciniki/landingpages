@@ -23,7 +23,7 @@ function ciniki_landingpages_cron_jobs($ciniki) {
     //
     $dt = new DateTime('now', new DateTimeZone('UTC'));
     $dt->sub(new DateInterval('PT10M'));
-    $strsql = "SELECT id, business_id, user_agent, flags "
+    $strsql = "SELECT id, tnid, user_agent, flags "
         . "FROM ciniki_landingpage_log "
         . "WHERE log_date > '" . $dt->format('Y-m-d H:i:s') . "' "
         . "";

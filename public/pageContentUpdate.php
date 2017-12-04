@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This method will add a new landing page for the business.
+// This method will add a new landing page for the tenant.
 //
 // Arguments
 // ---------
@@ -17,7 +17,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'page_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Page'), 
         'content_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Content'), 
         'menu_title'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Menu Title'), 
@@ -38,10 +38,10 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id as owner
+    // Check access to tnid as owner
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'landingpages', 'private', 'checkAccess');
-    $rc = ciniki_landingpages_checkAccess($ciniki, $args['business_id'], 'ciniki.landingpages.pageContentUpdate');
+    $rc = ciniki_landingpages_checkAccess($ciniki, $args['tnid'], 'ciniki.landingpages.pageContentUpdate');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -53,7 +53,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
         . "ciniki_landingpage_items.sequence, "
         . "ciniki_landingpage_items.content_id "
         . "FROM ciniki_landingpage_items "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' " 
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' " 
         . "AND page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' " 
         . "AND content_id = '" . ciniki_core_dbQuote($ciniki, $args['content_id']) . "' " 
         . "";
@@ -75,7 +75,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
         $args['permalink'] = ciniki_core_makePermalink($ciniki, $args['menu_title']);
         $strsql = "SELECT id "
             . "FROM ciniki_landingpage_items "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' " 
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' " 
             . "AND page_id = '" . ciniki_core_dbQuote($ciniki, $args['page_id']) . "' " 
             . "AND permalink = '" . ciniki_core_dbQuote($ciniki, $args['permalink']) . "' "
             . "AND id <> '" . ciniki_core_dbQuote($ciniki, $args['item_id']) . "' "
@@ -105,7 +105,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     //
     // Add the item to the database
     //
-    $rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.landingpages.item', $args['item_id'], $args, 0x04);
+    $rc = ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.landingpages.item', $args['item_id'], $args, 0x04);
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.landingpages');
         return $rc;
@@ -114,7 +114,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     //
     // Add the content to the database
     //
-    $rc = ciniki_core_objectUpdate($ciniki, $args['business_id'], 'ciniki.landingpages.content', $args['content_id'], $args, 0x04);
+    $rc = ciniki_core_objectUpdate($ciniki, $args['tnid'], 'ciniki.landingpages.content', $args['content_id'], $args, 0x04);
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.landingpages');
         return $rc;
@@ -125,7 +125,7 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     //
     if( isset($args['sequence']) ) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'sequencesUpdate');
-        $rc = ciniki_core_sequencesUpdate($ciniki, $args['business_id'], 'ciniki.landingpages.item', 'page_id', $args['page_id'], $args['sequence'], $item['sequence']);
+        $rc = ciniki_core_sequencesUpdate($ciniki, $args['tnid'], 'ciniki.landingpages.item', 'page_id', $args['page_id'], $args['sequence'], $item['sequence']);
         if( $rc['stat'] != 'ok' ) {
             ciniki_core_dbTransactionRollback($ciniki, 'ciniki.landingpages');
             return $rc;
@@ -141,11 +141,11 @@ function ciniki_landingpages_pageContentUpdate(&$ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'landingpages');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'landingpages');
 
     return array('stat'=>'ok');
 }
