@@ -204,7 +204,7 @@ function ciniki_landingpages_main() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_landingpages_main', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -274,17 +274,17 @@ function ciniki_landingpages_main() {
         } else {
             var name = this.page.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the page first');
+                M.alert('You must enter the name of the page first');
                 return false;
             }
             var permalink = this.page.formValue('permalink');
             if( name == '' ) {
-                alert('You must enter the permalink of the page first');
+                M.alert('You must enter the permalink of the page first');
                 return false;
             }
             var title = this.page.formValue('title');
             if( title == '' ) {
-                alert('You must enter the title of the page first');
+                M.alert('You must enter the title of the page first');
                 return false;
             }
             var c = this.page.serializeForm('no');
@@ -303,17 +303,17 @@ function ciniki_landingpages_main() {
         if( this.page.page_id == 0 ) {
             var name = this.page.formValue('name');
             if( name == '' ) {
-                alert('You must enter the name of the page first');
+                M.alert('You must enter the name of the page first');
                 return false;
             }
             var permalink = this.page.formValue('permalink');
             if( name == '' ) {
-                alert('You must enter the permalink of the page first');
+                M.alert('You must enter the permalink of the page first');
                 return false;
             }
             var title = this.page.formValue('title');
             if( title == '' ) {
-                alert('You must enter the title of the page first');
+                M.alert('You must enter the title of the page first');
                 return false;
             }
             var c = this.page.serializeForm('yes');
@@ -373,7 +373,7 @@ function ciniki_landingpages_main() {
 
 
     this.contentDelete = function() {
-        if( confirm("Are you sure you want to remove '" + this.event.data.name + "' as an event ?") ) {
+        M.confirm("Are you sure you want to remove '" + this.event.data.name + "' as an event ?",null,function() {
             var rsp = M.api.getJSONCb('ciniki.landingpages.eventDelete', 
                 {'tnid':M.curTenantID, 'event_id':M.ciniki_landingpages_main.event.event_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
@@ -382,6 +382,6 @@ function ciniki_landingpages_main() {
                     }
                     M.ciniki_landingpages_main.event.close();
                 });
-        }
+        });
     }
 };
